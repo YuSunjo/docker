@@ -1,0 +1,15 @@
+#docker-compose : 멀티 컨테이너에서 서로 정보를 주고받기위해서 생김
+#build에 .은 dockerfile과 같은 디렉토리에 있어서 . 으로 해주면 됨
+#docker-compose up  yml파일이 있는곳에서 
+#docker-compose up --build  --빌드부터다시 할 때.. 
+
+#docker-compose down  -- 다른 터미널에서 꺼야함
+#docker-compose up -d (--build) 
+version: "3"
+services: 
+  redis-server:
+    image: "redis"
+  node-app:
+    build: . 
+    ports: 
+      - "5000:8080"
