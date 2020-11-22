@@ -1,0 +1,37 @@
+npm run build 
+
+Dockerfile.dev를 쓸경우 
+docker build ./ 하면 애러남 --> Dockerfile를 현재 디렉토리에서 찾는데 Dockerfile.dev여서 못찾음 
+docker build -f Dockerfile.dev ./   를 해줘야한다. 
+
+도커에서는 npm install 할때 node_modules를 복사해주니까 여기에선 node_modules는 필요가 없다. 
+
+docker build -f Dockerfile.dev -t tnswh2023/docker-react-app ./
+
+원래 접속이 3000에 접속이 되어야하지만 port를 맵핑을 해줘야한다. 
+
+docker run -it -p 3000:3000 tnswh2023/docker-react-app
+
+코드를 수정한 것을 바로 수정하기 위해 Volume을 적용 
+docker run -it -p 3000:3000 -v /usr/src/app/node_modules -v %cd%:/usr/src/app tnswh2023/docker-react-app
+--cmd 창에서만 된다. 
+
+너무 기니까 docker-compose로 실행해보기 
+
+docker-compose up --build 
+
+react를 도커 환경에서 test 
+docker run -it tnswh2023/docker-react-app npm run test
+
+test 부분도 변경하면 바로 적용하게 하려면 test 부분도 Volume을 넣어줘야한다. 
+docker-compose.yml 참고
+
+개발환경과 운영환경
+운영환경에서 실행시키기(nginx)
+운영환경을 위한 Dockerfile이 필요하다. 운영환경에선 build파일 안에 있는것을 사용 
+
+docker build .
+
+nginx 는 80번이 기본 포트
+docker run -p 8080:80 tnswh2023/docker-react-app
+
